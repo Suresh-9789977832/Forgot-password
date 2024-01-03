@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs")
 const auth=require("../Common/index")
 const usermodal = require("../Modal/login")
 const nodemailer = require("nodemailer")
-const jwt=require("jsonwebtoken")
+const jwt = require("jsonwebtoken")
 
 
 const signup = async (req, res) => {
@@ -80,7 +80,7 @@ const forgotpass = async (req, res) => {
     try {
         if (user) {
             const token = await auth.createtoken({ name: user.name, email: user.email })
-            const id=user._id
+            const id = user._id
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
@@ -92,8 +92,8 @@ const forgotpass = async (req, res) => {
               var mailOptions = {
                 from: 'sanddysuresh@gmail.com',
                 to: `${email}`,
-                subject: 'Sending Email using Node.js',
-                text: `http://localhost:3001/reset/${token}/${id}`
+                subject: 'Reset your password',
+                text: `https://forgot-password-pvqb.onrender.com/${token}/${id}`
               };
               
               transporter.sendMail(mailOptions, function(error, info){
@@ -102,9 +102,15 @@ const forgotpass = async (req, res) => {
                 } else {
                     return res.send({
                         message: "Mail send successfully please check your mail",
+                        token
                  })
                 }
               });
+
+
+            res.status(200).send({
+                message:"user is there"
+            })
         }   
         else {
             res.status(400).send({
@@ -112,9 +118,6 @@ const forgotpass = async (req, res) => {
             })
         }
      
-        
-          
-        
     } catch (error) {
         res.status(500).send({
             message: "Internal server error",
