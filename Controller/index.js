@@ -106,11 +106,6 @@ const forgotpass = async (req, res) => {
                  })
                 }
               });
-
-
-            res.status(200).send({
-                message:"user is there"
-            })
         }   
         else {
             res.status(400).send({
