@@ -125,6 +125,9 @@ const forgotpass = async (req, res) => {
    
 }
 
+
+
+
 const get_reset_password = async (req, res) => {
     try {
         let { token} = req.params
@@ -149,6 +152,9 @@ const get_reset_password = async (req, res) => {
     }
 
 }
+
+
+
 
 const reset_password = async (req, res) => {
 
