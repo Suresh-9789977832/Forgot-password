@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import env from '../../env';
 import toast from 'react-hot-toast';
@@ -14,7 +14,27 @@ function Reset() {
   const [password, setpassword] = useState("")
   const navigate=useNavigate()
 
-    const resetpassword = async () => {
+      useEffect(() => {
+        getreset()
+      },[])    
+
+  const getreset = async () => {
+        try {
+          let res = await axios.get(`${env.API_URL}/reset/${token}/${id}`)
+          if (res.status == 400) {
+              navigate('/')
+              toast.error("Invalid reset link please generate new link")
+            }
+        } catch (error) {
+          if (error.response.status == 500) {
+            navigate('/')
+            toast.error("Invalid reset link please generate new link")
+          }
+        }
+      }
+
+  
+      const resetpassword = async () => {
         try {
           let res = await axios.post(`${env.API_URL}/reset/${token}/${id}`, {password})
           if (res.status == 200) {
@@ -28,10 +48,10 @@ function Reset() {
             navigate('/')
             toast.error("Invalid reset link please generate new link")
           }
-          console.log(error.response)
-
         }
-      }
+  }
+  
+  
     return <>
              <div className='reset_wrapper'>
             <Box
