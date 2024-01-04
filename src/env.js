@@ -1,5 +1,5 @@
 const env = {
-        API_URL:"http://localhost:3001/user"
+        API_URL:"https://forgot-password-pvqb.onrender.com/user"
 }
 
 export default env
