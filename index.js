@@ -10,7 +10,7 @@ const PORT = process.env.PORT
 app.use(express.json())
 app.use(cors({
     origin: ["https://forgot-password-pvqb.onrender.com"],
-    methods: ["POST"],
+    methods: ["POST","get"],
     credentials:true
 }))
 app.use(cookie_parser())

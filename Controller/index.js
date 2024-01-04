@@ -79,7 +79,7 @@ const forgotpass = async (req, res) => {
     const user = await usermodal.findOne({ email: email })
     try {
         if (user) {
-            const token = await auth.createtoken({ name: user.name, email: user.email })
+            const token = await auth.createtoken({ name: user.name, email: user.email ,id:user._id})
             const id = user._id
             var transporter = nodemailer.createTransport({
                 service: 'gmail',
@@ -93,16 +93,17 @@ const forgotpass = async (req, res) => {
                 from: 'sanddysuresh@gmail.com',
                 to: `${email}`,
                 subject: 'Reset your password',
-                text: `https://forgot-password-pvqb.onrender.com/${token}/${id}`
+                text: `https://forgot-password-pvqb.onrender.com/reset/${token}/${id}`
               };
               
               transporter.sendMail(mailOptions, function(error, info){
-                if (error) {
+                if (error) {    
                   console.log(error);
                 } else {
                     return res.send({
                         message: "Mail send successfully please check your mail",
-                        token
+                        token,
+                        id
                  })
                 }
               });
@@ -122,6 +123,31 @@ const forgotpass = async (req, res) => {
 
 
    
+}
+
+const get_reset_password = async (req, res) => {
+    try {
+        let { token} = req.params
+
+        const verifytoken=jwt.verify(token,process.env.JWT_SECRET)
+            
+        if (!verifytoken) {
+            res.status(400).send({
+                message:"user not exists"
+            })
+        }
+        else {
+            res.status(200).send({
+                message:"valid user"
+            })
+        } 
+    } catch (error) {
+            res.status(500).send({
+            message: "Internal server error",
+            errormessage:error.message
+        })
+    }
+
 }
 
 const reset_password = async (req, res) => {
@@ -149,7 +175,7 @@ const reset_password = async (req, res) => {
         }
 
     } catch (error) {
-        res.status(500).send({
+            res.status(500).send({
             message: "Internal server error",
             errormessage:error.message
         })
@@ -164,5 +190,6 @@ module.exports = {
     signup,
     login,
     forgotpass,
-    reset_password
+    reset_password,
+    get_reset_password
 }
