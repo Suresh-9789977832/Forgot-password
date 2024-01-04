@@ -24,7 +24,10 @@ function Reset() {
           if (res.status == 400) {
               navigate('/')
               toast.error("Invalid reset link please generate new link")
-            }
+          }
+          if (res.status == 200) {
+            navigate('/reset/:token/:id')
+          }
         } catch (error) {
           if (error.response.status == 500) {
             navigate('/')
@@ -51,7 +54,7 @@ function Reset() {
         }
   }
   
-  
+
     return <>
              <div className='reset_wrapper'>
             <Box
